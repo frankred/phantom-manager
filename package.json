@@ -1,0 +1,11 @@
+{
+  "name": "phantom-manager",
+  "version": "0.0.1",
+  "description": "node-phantom instance manager",
+  "main": "index.js",
+  "dependencies": {
+    "async": "*",
+    "phantom": "*"
+  },
+  "author": "Frank Roth"
+}
