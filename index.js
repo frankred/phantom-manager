@@ -1,6 +1,7 @@
 var async = require('async');
 var extend = require('extend');
 var PhantomInstance = require('./lib/phantom-instance.js');
+var logger = require('./lib/logger.js');
 
 function PhantomManager(callback, options) {
 
@@ -20,6 +21,11 @@ function PhantomManager(callback, options) {
     this.createInstances(this.options.amount, function (error) {
         callback(error);
     });
+};
+
+PhantomManager.prototype.openURL = function (url, evaluate, callback) {
+    var instance = this.getInstance();
+    instance.openURL(url, evaluate, callback);
 };
 
 PhantomManager.prototype.getInstance = function () {
@@ -42,7 +48,7 @@ PhantomManager.prototype.createInstances = function (amount, instancesCreatedCal
 
     var createInstance = function (callback) {
         var instance = new PhantomInstance(self.options);
-        instance.createPhantomProcess(function () {
+        instance.init(function () {
             self.instances.push(instance);
             callback();
         });
@@ -57,11 +63,6 @@ PhantomManager.prototype.createInstances = function (amount, instancesCreatedCal
     async.parallel(doParallelFunctions, function (error, results) {
         instancesCreatedCallback(error);
     });
-};
-
-PhantomManager.prototype.openURL = function (url, evaluate, callback) {
-    var instance = this.getInstance();
-    instance.openURL(url, evaluate, callback);
 };
 
 module.exports = PhantomManager;
