@@ -17,7 +17,7 @@ function PhantomManager(callback, options) {
 
     this.options = extend(this.default_options, options);
 
-    this.createInstances(options.amount, function (error) {
+    this.createInstances(this.options.amount, function (error) {
         callback(error);
     });
 };
