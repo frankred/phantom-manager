@@ -1,7 +1,6 @@
 var async = require('async');
 var extend = require('extend');
 var PhantomInstance = require('./lib/phantom-instance.js');
-var logger = require('./lib/logger.js');
 
 function PhantomManager(callback, options) {
 
@@ -23,9 +22,9 @@ function PhantomManager(callback, options) {
     });
 };
 
-PhantomManager.prototype.openURL = function (url, evaluate, callback) {
+PhantomManager.prototype.openURL = function (url, pageReady, evaluate, callback) {
     var instance = this.getInstance();
-    instance.openURL(url, evaluate, callback);
+    instance.openURL(url, pageReady, evaluate, callback);
 };
 
 PhantomManager.prototype.getInstance = function () {
