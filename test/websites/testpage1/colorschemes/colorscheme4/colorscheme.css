@@ -1,0 +1,67 @@
+
+#footer {
+ background:url('images/static/bg-bottom.png') bottom center repeat-x;
+}
+
+#content_container h1 {
+ color:#8DB634;
+}
+
+#content_container h2 {
+ color:#8DB634;
+}
+
+#content_container h3 {
+ color:#8DB634;
+}
+
+#header {
+ background:url('images/static/bg-top.png') top center repeat-x;
+}
+
+#sub_container2 ul {
+ list-style-image:url('images/static/liststyle.gif');
+}
+
+#content_container table {
+ border-top:3px solid #516276;	
+ border-bottom:3px solid #516276;
+ border-right:2px solid #516276;
+ border-left:2px solid #516276;
+}
+
+#content_container th {
+ background-color:#758598;
+ border-top:3px solid #516276;
+ border-bottom:3px solid #516276;
+}
+
+#main_nav_container {
+ background:url('images/static/menue_bg.png') right -20px no-repeat;
+}
+
+#main_nav_list {
+ border-left:20px solid #516276;
+}
+
+.sub_nav_list {
+ border-bottom:2px solid #516276;
+}
+
+a.main_nav_active_item {
+ border-left:10px solid #516276;
+ border-bottom:2px solid #516276;
+ background-color:#516276;
+}
+
+a.main_nav_item:hover {
+ background:url('../../images/dynamic/buttonset4/menuepunktbg.html') left bottom #fff repeat-x;
+}
+
+a.sub_nav_item {
+ background:url('../../images/dynamic/buttonset4/menuepunktbg_man.html') right bottom #E4E1DB no-repeat;
+}
+
+a.sub_nav_item:hover {
+ background:url('../../images/dynamic/buttonset4/menuepunktbg.html') left bottom #fff repeat-x;
+}

@@ -1,0 +1,219 @@
+body#main_body {
+  margin: 0;
+  padding: 0;
+  background-color: #ffffff;
+}
+
+#main_container {
+	clear: both;
+  background-color: #ffffff;
+ 	z-index: 0;
+}
+
+#content_container ul {
+	list-style:none;
+}
+
+#content_container ul li {
+	padding:0;
+}
+
+#content_container ul, #content_container ol {
+ margin-left:5em;
+ margin-bottom:2em;
+}
+
+#content_container ul li, #content_container ol li {
+ padding:0.2em 0;
+}
+/** Footer
+==============================================================================*/
+#footer {
+	width: 100%;
+  clear: both;
+ height:50px;
+ text-align:center;
+}
+#footer_text {
+ color:#fff;
+ padding-top:10px;
+}
+/** Menue
+==============================================================================*/
+
+#main_nav_list {
+ list-style:none;
+ margin:0;
+ padding:0;
+ border-top:1px solid #CFC9BC;
+}
+
+#main_nav_list a { 
+  overflow: hidden;
+  height: 1.5em;
+  line-height: 1.6em;
+}
+
+a.main_nav_item {
+  display:block;
+  padding:0.4em 0.5em;
+  border-top:1px solid #F7F5F2;
+  border-bottom:1px solid #CFC9BC;
+  margin:0;
+  color: #000000;
+  background-color: #f0efeb;
+}
+
+a.main_nav_active_item {
+  display:block;
+  padding:0.3em 1em;
+  color:#fff;
+  margin:0;
+}
+
+a.main_nav_item:hover {
+  background-color: #fcfcfc;
+}
+
+.sub_nav_list {
+ list-style:none;
+ margin:0;
+ padding:0;
+}
+
+.sub_nav_list li a {
+  overflow: hidden;
+  height: 1.5em;
+ display:block;
+ padding:0.4em 0;
+ text-indent: 0.5em;
+ color:black;
+ border-top:1px solid #F7F5F2;
+ border-bottom:1px solid #CFC9BC;
+ margin:0;
+ width:100%;
+}
+
+a.sub_nav_item {
+  background-color: #e4e1dc;
+}
+
+a.sub_nav_active_item {
+  background-color: #f0efeb;
+}
+
+.sub_nav_list li a:hover {
+  background-color: #fcfcfc;
+}
+/* Fix white-space bug in IE/Win. Hide from IE/Mac. \*/
+* html #main_nav_list li { display:inline;}
+/* End fix. */
+
+/******************************************************************************/
+#logo{
+	z-index: 3;	
+ position:absolute;
+ top:0;
+ left:55%;
+ height:148px;
+ width:299px;
+}
+
+#text_caption {
+ color:#fff;
+ position:absolute;
+ top:10px;
+ left:3%;
+ width:500px;
+}
+#key_visual {
+	z-index: 3;
+	position:relative;
+	top:0;
+	left:5%;
+	margin-top: 30px;
+	height:200px;
+	width:400px;
+	border-left:5px solid #D5D0C4;
+}
+#header {
+ height:100px;
+ width:100%;
+ position:relative;
+ top:0;
+ left:0;
+}
+
+#layout_table {
+	width: 100%;
+	border-collapse: collapse;
+}
+
+#left_column {
+	width: 250px;
+	vertical-align: top;
+  background-color: #f0efeb;
+}
+
+#right_column {
+	vertical-align: top;
+}
+
+#left_column_container {
+	width: 250px;	
+  background-color: #f0efeb;
+  padding: 120px 0 120px 0;
+  margin: 0;
+}
+
+#sub_container2 {
+	background-color:#ffffff;
+	margin: 30px auto 0 auto;
+	width: 94%;
+}
+
+#content_container {
+	border:1px solid #F3F4F4;
+	letter-spacing:0.05em;
+	line-height:1.5em;
+	padding: 16px; 
+}
+
+#content_container h1 {
+  padding:16px;
+}
+#content_container h2 {
+  padding:16px;
+}
+#content_container h3 {
+  padding:16px;
+}
+
+#content_container a {
+ color:#172D52;
+}
+#content_container a:visited {
+ color:#172D52;
+}
+#content_container a:hover {
+ color:#FF8A00;
+}
+#content_container a:active {
+ color:#172D52;
+}
+#content_container table {
+ border-collapse:collapse;
+}
+
+#content_container table th {
+ padding:0.5em 0.2em;
+}
+#content_container table td {
+ padding:0.2em 0.2em;
+ border-bottom:1px solid #CFC9BC;
+}
+#content_container table tr.odd, #content_container table tr.even {
+}
+#content_container table tr.odd:hover, #content_container table tr.even:hover {
+ background-color:#F1EFEB;
+}
