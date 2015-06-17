@@ -10,15 +10,16 @@ var testWebsitesUrls = null,
     webSitesDirOuterTestsDir = 'test/' + webSitesDirInnerTestsDir;
 
 var app = express();
-
 app.get(/^(.+)$/, function (req, res) {
-    res.sendfile(webSitesDirOuterTestsDir + req.params[0]);
+    res.sendFile(path.resolve(webSitesDirOuterTestsDir + req.params[0]));
 });
 
 // Test
 describe("phantom-manager test", function () {
 
     var classUnderTest;
+
+    const timeout = 60000;
 
     before(function (done) {
         var sitesDir = path.join(__dirname, webSitesDirInnerTestsDir);
@@ -31,7 +32,7 @@ describe("phantom-manager test", function () {
     });
 
     it("check null pageReady", function (done) {
-        this.timeout(60000);
+        this.timeout(timeout);
         classUnderTest.openURL(testWebsitesUrls['testpage1'], null, function () {
             return document.title;
         }, function (error, url, result) {
@@ -41,7 +42,7 @@ describe("phantom-manager test", function () {
     });
 
     it("check title", function (done) {
-        this.timeout(60000);
+        this.timeout(timeout);
         classUnderTest.openURL(testWebsitesUrls['testpage1'], null, function () {
             return document.title;
         }, function (error, url, result) {
@@ -52,23 +53,36 @@ describe("phantom-manager test", function () {
     });
 
     it("check error: PAGE LOAD FAILED", function (done) {
-        this.timeout(60000);
+        this.timeout(timeout);
         const invalid_url = 'invalidurlhahahahah';
         classUnderTest.openURL(invalid_url, null, function () {
             return document.title;
         }, function (error, url, result) {
-            assert(error, 'PAGE_LOAD_FAILED');
+            assert.equal(error, 'PAGE_LOAD_FAILED');
             done();
         });
     });
+
+    it("check retries", function (done) {
+        this.timeout(timeout);
+        const invalid_url = 'invalidurlhahahahah';
+        classUnderTest.openURL(invalid_url, null, function () {
+            return document.title;
+        }, function (error, task, result) {
+            assert.equal(error, 'PAGE_LOAD_FAILED');
+            assert.equal(task.tries, classUnderTest.options.retries);
+            done();
+        });
+    });
+
 });
 
 function getTestWebSitesUrls(dir) {
-    var baseUrl = 'http://' + pjson.config['test-host'] + ':' + pjson.config['test-port'] + '/',
-        startFile = 'index.html',
-        results = {};
-    fs.readdirSync(dir).forEach(function (file) {
+    var baseUrl = 'http://' + pjson.config['test-host'] + ':' + pjson.config['test-port'] + '/';
+    var startFile = 'index.html';
+    var results = {};
 
+    fs.readdirSync(dir).forEach(function (file) {
         var newDir = dir + '/' + file;
         var stat = fs.statSync(newDir);
 

@@ -12,7 +12,8 @@ function PhantomManager(callback, options) {
             width: 800,
             height: 600
         },
-        load_images: true
+        load_images: true,
+        retries: 3
     };
 
     this.options = extend(this.default_options, options);
