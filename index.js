@@ -24,8 +24,7 @@ function PhantomManager(callback, options) {
 };
 
 PhantomManager.prototype.openURL = function (url, pageReady, evaluate, callback) {
-    var instance = this.getInstance();
-    instance.openURL(url, pageReady, evaluate, callback);
+    this.getInstance().openURL(url, pageReady, evaluate, callback);
 };
 
 PhantomManager.prototype.getInstance = function () {
