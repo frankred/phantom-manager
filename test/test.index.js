@@ -35,7 +35,7 @@ describe("phantom-manager test", function () {
         this.timeout(timeout);
         classUnderTest.openURL(testWebsitesUrls['testpage1'], null, function () {
             return document.title;
-        }, function (error, url, result) {
+        }, null, function (error, task, result) {
             assert.ifError(error);
             done();
         });
@@ -45,7 +45,11 @@ describe("phantom-manager test", function () {
         this.timeout(timeout);
         classUnderTest.openURL(testWebsitesUrls['testpage1'], null, function () {
             return document.title;
-        }, function (error, url, result) {
+        }, function (page, callback) {
+            page.renderBase64("PNG", function (data) {
+                callback();
+            });
+        }, function (error, task, result) {
             assert.ifError(error);
             assert.equal(result, 'Home - Astrid Florence Cassing');
             done();
@@ -57,7 +61,7 @@ describe("phantom-manager test", function () {
         const invalid_url = 'invalidurlhahahahah';
         classUnderTest.openURL(invalid_url, null, function () {
             return document.title;
-        }, function (error, url, result) {
+        }, null, function (error, task, result) {
             assert.equal(error, 'PAGE_LOAD_FAILED');
             done();
         });
@@ -68,7 +72,7 @@ describe("phantom-manager test", function () {
         const invalid_url = 'invalidurlhahahahah';
         classUnderTest.openURL(invalid_url, null, function () {
             return document.title;
-        }, function (error, task, result) {
+        }, null, function (error, task, result) {
             assert.equal(error, 'PAGE_LOAD_FAILED');
             assert.equal(task.tries, classUnderTest.options.retries);
             done();

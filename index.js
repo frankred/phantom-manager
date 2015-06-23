@@ -23,8 +23,8 @@ function PhantomManager(callback, options) {
     });
 };
 
-PhantomManager.prototype.openURL = function (url, pageReady, evaluate, callback) {
-    this.getInstance().openURL(url, pageReady, evaluate, callback);
+PhantomManager.prototype.openURL = function (url, pageBefore, evaluate, pageAfter, callback) {
+    this.getInstance().openURL(url, pageBefore, evaluate, pageAfter, callback);
 };
 
 PhantomManager.prototype.getInstance = function () {
