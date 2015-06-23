@@ -35,7 +35,7 @@ describe("phantom-manager test", function () {
         this.timeout(timeout);
         classUnderTest.openURL(testWebsitesUrls['testpage1'], null, function () {
             return document.title;
-        }, null, function (error, task, result) {
+        }, null, null, function (error, task, result) {
             assert.ifError(error);
             done();
         });
@@ -45,7 +45,7 @@ describe("phantom-manager test", function () {
         this.timeout(timeout);
         classUnderTest.openURL(testWebsitesUrls['testpage1'], null, function () {
             return document.title;
-        }, function (page, callback) {
+        }, null, function (page, callback) {
             page.renderBase64("PNG", function (data) {
                 callback();
             });
@@ -61,7 +61,7 @@ describe("phantom-manager test", function () {
         const invalid_url = 'invalidurlhahahahah';
         classUnderTest.openURL(invalid_url, null, function () {
             return document.title;
-        }, null, function (error, task, result) {
+        }, null, null, function (error, task, result) {
             assert.equal(error, 'PAGE_LOAD_FAILED');
             done();
         });
@@ -72,9 +72,20 @@ describe("phantom-manager test", function () {
         const invalid_url = 'invalidurlhahahahah';
         classUnderTest.openURL(invalid_url, null, function () {
             return document.title;
-        }, null, function (error, task, result) {
+        }, null, null, function (error, task, result) {
             assert.equal(error, 'PAGE_LOAD_FAILED');
             assert.equal(task.tries, classUnderTest.options.retries);
+            done();
+        });
+    });
+
+    it("check eval inject", function (done) {
+        this.timeout(timeout);
+        classUnderTest.openURL(testWebsitesUrls['testpage1'], null, function (text) {
+            return document.title + ' ' + text;
+        }, 'hallo', null, function (error, task, result) {
+            assert.ifError(error);
+            assert.equal(result, 'Home - Astrid Florence Cassing hallo');
             done();
         });
     });
