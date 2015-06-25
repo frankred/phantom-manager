@@ -45,7 +45,7 @@ describe("phantom-manager test", function () {
         this.timeout(timeout);
         classUnderTest.openURL(testWebsitesUrls['testpage1'], null, function () {
             return document.title;
-        }, null, function (page, callback) {
+        }, null, function (page, result, callback) {
             page.renderBase64("PNG", function (data) {
                 callback();
             });
