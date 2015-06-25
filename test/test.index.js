@@ -41,7 +41,7 @@ describe("phantom-manager test", function () {
         });
     });
 
-    it("check title", function (done) {
+    it("check title and first try", function (done) {
         this.timeout(timeout);
         classUnderTest.openURL(testWebsitesUrls['testpage1'], null, function () {
             return document.title;
@@ -52,6 +52,7 @@ describe("phantom-manager test", function () {
         }, function (error, task, result) {
             assert.ifError(error);
             assert.equal(result, 'Home - Astrid Florence Cassing');
+            assert.equal(task.tries, 1);
             done();
         });
     });
