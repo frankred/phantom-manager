@@ -1,6 +1,6 @@
 {
   "name": "phantom-manager",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "node-phantom instance manager",
   "main": "index.js",
   "dependencies": {
