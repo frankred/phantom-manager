@@ -1,5 +1,5 @@
 var async = require('async');
-var extend = require('extend');
+var extend = require('extend-fn');
 var PhantomInstance = require('./lib/phantom-instance.js');
 
 function PhantomManager(callback, options) {

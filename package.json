@@ -5,8 +5,9 @@
   "main": "index.js",
   "dependencies": {
     "async": "*",
+    "extend-fn": "0.0.1",
     "phantom": "*",
-    "extend": "*"
+    "weak": "^1.0.0"
   },
   "devDependencies": {
     "express": "4.12.3",
