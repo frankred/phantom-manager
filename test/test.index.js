@@ -15,13 +15,14 @@ app.get(/^(.+)$/, function (req, res) {
 });
 
 // Test
-describe("phantom-manager test", function () {
+describe("PhantomManager", function () {
 
     var classUnderTest;
 
     const timeout = 60000;
 
     before(function (done) {
+        this.timeout(5000);
         var sitesDir = path.join(__dirname, webSitesDirInnerTestsDir);
         testWebsitesUrls = getTestWebSitesUrls(sitesDir);
         app.listen(pjson.config['test-port'], function () {
@@ -39,6 +40,43 @@ describe("phantom-manager test", function () {
             assert.ifError(error);
             done();
         });
+    });
+
+    it("check pageAfter", function (done) {
+        this.timeout(timeout);
+
+        var pageAfter = function (page, eval_result, ready) {
+            assert.ok(page);
+            assert.ok(page.openUrl);
+            assert.equal(eval_result, 'Home - Astrid Florence Cassing');
+            ready();
+        };
+
+        classUnderTest.openURL(testWebsitesUrls['testpage1'], null, function () {
+            return document.title;
+        }, null, pageAfter, function (error, task, result) {
+            assert.ifError(error);
+            done();
+        });
+    });
+
+    it("check inject", function (done) {
+        this.timeout(timeout);
+
+        classUnderTest.openURL(testWebsitesUrls['testpage1'], null, function (obj) {
+            return obj.x;
+        }, {x: 'bla'}, null, function (error, task, result) {
+            assert.ifError(error);
+            assert.equal(result, 'bla');
+            assert.notEqual(result, 'blubb');
+            done();
+        });
+    });
+
+    it("check instances amount", function (done) {
+        this.timeout(timeout);
+        assert.equal(classUnderTest.instances.length, classUnderTest.options.amount);
+        done();
     });
 
     it("check title and first try", function (done) {

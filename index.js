@@ -1,10 +1,12 @@
+var PhantomInstance = require('./lib/phantom-instance.js');
+var debug = require('debug')('phantom-manager');
 var async = require('async');
 var extend = require('extend-fn');
-var PhantomInstance = require('./lib/phantom-instance.js');
 
 function PhantomManager(callback, options) {
 
     this.default_options = {
+        phantom_port: 9900,
         amount: 4,
         parallel_each: 1,
         timeout: 30000,
@@ -43,23 +45,19 @@ PhantomManager.prototype.createInstances = function (amount, instancesCreatedCal
 
     var self = this;
 
-    this.instances = [];
-
-    var createInstance = function (callback) {
+    var createInstance = function (index, callback) {
         var instance = new PhantomInstance(self.options);
         instance.init(function () {
-            self.instances.push(instance);
-            callback();
+            callback(null, instance);
         });
     };
 
-    var doParallelFunctions = [];
-
-    for (var i = 0; i < amount; i++) {
-        doParallelFunctions.push(createInstance);
-    }
-
-    async.parallel(doParallelFunctions, function (error, results) {
+    async.times(amount, function (index, next) {
+        createInstance(index, function (error, instance) {
+            next(error, instance);
+        });
+    }, function (error, instances) {
+        self.instances = instances;
         instancesCreatedCallback(error);
     });
 };
