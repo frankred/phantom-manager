@@ -21,15 +21,8 @@ function PhantomManager(callback, options) {
     this.options = extend(this.default_options, options);
 
     var self = this;
-
-    this.killallZombies(function (error) {
-        if (error) {
-            // ignore
-        }
-
-        self.createInstances(self.options.amount, function (error) {
-            callback(error);
-        });
+    self.createInstances(self.options.amount, function (error) {
+        callback(error);
     });
 };
 
