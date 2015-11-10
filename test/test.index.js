@@ -32,6 +32,12 @@ describe("PhantomManager", function () {
         });
     });
 
+    before(function (done) {
+        this.timeout(5000);
+        classUnderTest.shutdown();
+        done();
+    });
+
     it("check null pageReady", function (done) {
         this.timeout(timeout);
         classUnderTest.openURL(testWebsitesUrls['testpage1'], null, function () {
@@ -39,6 +45,35 @@ describe("PhantomManager", function () {
         }, null, null, function (error, task, result) {
             assert.ifError(error);
             done();
+        });
+    });
+
+    it("check manager killall before openURL", function (done) {
+        this.timeout(timeout);
+
+        classUnderTest.shutdown(function(){
+            classUnderTest.openURL(testWebsitesUrls['testpage1'], null, function () {
+                return document.title;
+            }, null, null, function (error, task, result) {
+                assert.ifError(error);
+                assert.equal(result, 'Home - Astrid Florence Cassing');
+                done();
+            });
+        });
+    });
+
+    it("check manager killallzombies before openURL", function (done) {
+        this.timeout(timeout);
+
+        classUnderTest.killallZombies(function (error) {
+            assert.ifError(error);
+            classUnderTest.openURL(testWebsitesUrls['testpage1'], null, function () {
+                return document.title;
+            }, null, null, function (error, task, result) {
+                assert.ifError(error);
+                assert.equal(result, 'Home - Astrid Florence Cassing');
+                done();
+            });
         });
     });
 
