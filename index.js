@@ -15,7 +15,8 @@ function PhantomManager(callback, options) {
             height: 600
         },
         load_images: true,
-        retries: 3
+        retries: 3,
+        idle_time: 60000
     };
 
     this.options = extend(this.default_options, options);
@@ -31,15 +32,15 @@ PhantomManager.prototype.openURL = function (url, pageBefore, evaluate, evaluate
 };
 
 PhantomManager.prototype.getInstance = function () {
-    var smallest_instance_index = 0;
+    var shortest_queue = 0;
 
     for (var i = 1; i < this.instances.length; i++) {
-        if (this.instances[i].queue.length() < this.instances[smallest_instance_index].queue.length()) {
-            smallest_instance_index = i;
+        if (this.instances[i].queue.length() < this.instances[shortest_queue].queue.length()) {
+            shortest_queue = i;
         }
     }
 
-    return this.instances[smallest_instance_index];
+    return this.instances[shortest_queue];
 };
 
 PhantomManager.prototype.createInstances = function (amount, instancesCreatedCallback) {
