@@ -6,7 +6,6 @@ A wrapper to handle multiple phantom instances based on phantomjs-node
 var PhantomManager = require('phantom-manager');
 
 var options = {
-    phantom_port: 9900,
     amount: 4,
     parallel_each: 1,
     timeout: 30000,

@@ -6,7 +6,6 @@ var extend = require('extend-fn');
 function PhantomManager(callback, options) {
 
     this.default_options = {
-        phantom_port: 9900,
         amount: 4,
         parallel_each: 1,
         timeout: 30000,
