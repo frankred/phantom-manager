@@ -15,7 +15,7 @@ function PhantomManager(callback, options) {
         },
         load_images: true,
         retries: 3,
-        idle_time: 60000
+        idle_time: 120000
     };
 
     this.options = extend(this.default_options, options);
