@@ -48,8 +48,8 @@ PhantomManager.prototype.createInstances = function (amount, instancesCreatedCal
 
     var createInstance = function (index, callback) {
         var instance = new PhantomInstance(self.options);
-        instance.init(function () {
-            callback(null, instance);
+        instance.init(function (error) {
+            callback(error, instance);
         });
     };
 
