@@ -8,7 +8,6 @@ var extend = require('extend-fn');
 function PhantomManager(callback, options) {
 
     this.default_options = {
-        phantom_port: 9900,
         amount: 4,
         parallel_each: 1,
         timeout: 30000,
@@ -18,7 +17,7 @@ function PhantomManager(callback, options) {
         },
         load_images: true,
         retries: 3,
-        idle_time: 60000
+        idle_time: 120000
     };
 
     this.options = extend(this.default_options, options);
@@ -51,8 +50,8 @@ PhantomManager.prototype.createInstances = function (amount, instancesCreatedCal
 
     var createInstance = function (index, callback) {
         var instance = new PhantomInstance(self.options);
-        instance.init(function () {
-            callback(null, instance);
+        instance.init(function (error) {
+            callback(error, instance);
         });
     };
 
