@@ -1,47 +1,54 @@
-var express = require('express');
-var path = require('path');
+"use strict";
+
 var assert = require("assert");
-var fs = require('fs');
-var PhantomManager = require('../index.js');
-var pjson = require('../package.json');
-
-var testWebsitesUrls = null,
-    webSitesDirInnerTestsDir = 'websites',
-    webSitesDirOuterTestsDir = 'test/' + webSitesDirInnerTestsDir;
-
-var app = express();
-app.get(/^(.+)$/, function (req, res) {
-    res.sendFile(path.resolve(webSitesDirOuterTestsDir + req.params[0]));
-});
+var debug = require("debug")("phantom-manager:test");
+var pjson = require('../../package.json');
+var PhantomManager = require('../../index');
+var Webserver = require('local-webserver');
 
 // Test
 describe("PhantomManager", function () {
+
+    var websites;
+    var server = new Webserver("./test/websites", pjson.config['test-port']);
 
     var classUnderTest;
 
     const timeout = 60000;
 
     before(function (done) {
-        this.timeout(5000);
-        var sitesDir = path.join(__dirname, webSitesDirInnerTestsDir);
-        testWebsitesUrls = getTestWebSitesUrls(sitesDir);
-        app.listen(pjson.config['test-port'], function () {
-            classUnderTest = new PhantomManager(function () {
+        this.timeout(10000);
+
+        server.start(function () {
+            websites = server.getAvailableWebsites();
+            var options = {
+                amount: 4,
+                timeout: 5000
+            };
+
+            classUnderTest = new PhantomManager(function (error) {
+                assert.ifError(error);
                 done();
-            }, {idle_time: 5000});
+            }, options);
         });
+
     });
 
-    before(function (done) {
-        this.timeout(5000);
-        classUnderTest.shutdown();
-        done();
+    after(function (done) {
+        server.close(function() {
+            classUnderTest.shutdown(function(error) {
+                if(error) {
+                    debug(error.message);
+                }
+                done();
+            });
+        });
     });
 
 
     it("bring them all to idle", function (done) {
         this.timeout(timeout);
-        classUnderTest.openURL(testWebsitesUrls['testpage1'], null, function (text) {
+        classUnderTest.openURL(websites['testpage.com'], null, function (text) {
             return document.title + ' ' + text;
         }, 'hallo', null, function (error, task, result) {
             assert.ifError(error);
@@ -55,10 +62,11 @@ describe("PhantomManager", function () {
 
     it("check null pageReady", function (done) {
         this.timeout(timeout);
-        classUnderTest.openURL(testWebsitesUrls['testpage1'], null, function () {
+        classUnderTest.openURL(websites['testpage.com'], null, function () {
             return document.title;
         }, null, null, function (error, task, result) {
             assert.ifError(error);
+            assert.ok(result);
             done();
         });
     });
@@ -67,7 +75,7 @@ describe("PhantomManager", function () {
         this.timeout(timeout);
 
         classUnderTest.shutdown(function () {
-            classUnderTest.openURL(testWebsitesUrls['testpage1'], null, function () {
+            classUnderTest.openURL(websites['testpage.com'], null, function () {
                 return document.title;
             }, null, null, function (error, task, result) {
                 assert.ifError(error);
@@ -82,7 +90,7 @@ describe("PhantomManager", function () {
 
         classUnderTest.killallZombies(function (error) {
             assert.ifError(error);
-            classUnderTest.openURL(testWebsitesUrls['testpage1'], null, function () {
+            classUnderTest.openURL(websites['testpage.com'], null, function () {
                 return document.title;
             }, null, null, function (error, task, result) {
                 assert.ifError(error);
@@ -102,10 +110,11 @@ describe("PhantomManager", function () {
             ready();
         };
 
-        classUnderTest.openURL(testWebsitesUrls['testpage1'], null, function () {
+        classUnderTest.openURL(websites['testpage.com'], null, function () {
             return document.title;
         }, null, pageAfter, function (error, task, result) {
             assert.ifError(error);
+            assert.ok(result);
             done();
         });
     });
@@ -113,7 +122,7 @@ describe("PhantomManager", function () {
     it("check inject", function (done) {
         this.timeout(timeout);
 
-        classUnderTest.openURL(testWebsitesUrls['testpage1'], null, function (obj) {
+        classUnderTest.openURL(websites['testpage.com'], null, function (obj) {
             return obj.x;
         }, {x: 'bla'}, null, function (error, task, result) {
             assert.ifError(error);
@@ -131,10 +140,12 @@ describe("PhantomManager", function () {
 
     it("check title and first try", function (done) {
         this.timeout(timeout);
-        classUnderTest.openURL(testWebsitesUrls['testpage1'], null, function () {
+        classUnderTest.openURL(websites['testpage.com'], null, function () {
             return document.title;
         }, null, function (page, result, callback) {
-            page.renderBase64("PNG", function (data) {
+            page.renderBase64("PNG", function (error, data) {
+                assert.ifError(error);
+                assert.ok(data);
                 callback();
             });
         }, function (error, task, result) {
@@ -150,7 +161,7 @@ describe("PhantomManager", function () {
         const invalid_url = 'invalidurlhahahahah';
         classUnderTest.openURL(invalid_url, null, function () {
             return document.title;
-        }, null, null, function (error, task, result) {
+        }, null, null, function (error) {
             assert.equal(error, 'PAGE_LOAD_FAILED');
             done();
         });
@@ -161,7 +172,7 @@ describe("PhantomManager", function () {
         const invalid_url = 'invalidurlhahahahah';
         classUnderTest.openURL(invalid_url, null, function () {
             return document.title;
-        }, null, null, function (error, task, result) {
+        }, null, null, function (error, task) {
             assert.equal(error, 'PAGE_LOAD_FAILED');
             assert.equal(task.tries, classUnderTest.options.retries);
             done();
@@ -170,7 +181,7 @@ describe("PhantomManager", function () {
 
     it("check eval inject", function (done) {
         this.timeout(timeout);
-        classUnderTest.openURL(testWebsitesUrls['testpage1'], null, function (text) {
+        classUnderTest.openURL(websites['testpage.com'], null, function (text) {
             return document.title + ' ' + text;
         }, 'hallo', null, function (error, task, result) {
             assert.ifError(error);
@@ -179,19 +190,3 @@ describe("PhantomManager", function () {
         });
     });
 });
-
-function getTestWebSitesUrls(dir) {
-    var baseUrl = 'http://' + pjson.config['test-host'] + ':' + pjson.config['test-port'] + '/';
-    var startFile = 'index.html';
-    var results = {};
-
-    fs.readdirSync(dir).forEach(function (file) {
-        var newDir = dir + '/' + file;
-        var stat = fs.statSync(newDir);
-
-        if (stat && stat.isDirectory()) {
-            results[file] = baseUrl + file + '/' + startFile;
-        }
-    });
-    return results;
-};

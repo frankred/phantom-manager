@@ -1,3 +1,5 @@
+"use strict";
+
 var PhantomInstance = require('./lib/phantom-instance.js');
 var debug = require('debug')('phantom-manager');
 var async = require('async');
