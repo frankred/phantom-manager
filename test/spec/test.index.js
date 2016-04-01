@@ -17,7 +17,7 @@ describe("PhantomManager", function () {
     const timeout = 60000;
 
     before(function (done) {
-        this.timeout(10000);
+        this.timeout(timeout);
 
         server.start(function () {
             websites = server.getAvailableWebsites();
