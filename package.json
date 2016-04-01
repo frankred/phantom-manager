@@ -17,8 +17,8 @@
     "grunt-contrib-watch": "^0.6.1",
     "grunt-mocha-test": "^0.12.7",
     "jshint-stylish": "^2.1.0",
-    "local-webserver": "git+https://diygitlabbs01.infra.server.lan/mwsc/local-webserver.git",
-    "mocha": "^2.2.5"
+    "mocha": "^2.2.5",
+    "websites-hoster": "0.0.1"
   },
   "scripts": {
     "test": "grunt"

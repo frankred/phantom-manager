@@ -2,15 +2,16 @@
 
 var assert = require("assert");
 var debug = require("debug")("phantom-manager:test");
-var pjson = require('../../package.json');
+
 var PhantomManager = require('../../index');
-var Webserver = require('local-webserver');
+
+var Webserver = require('websites-hoster');
 
 // Test
 describe("PhantomManager", function () {
 
     var websites;
-    var server = new Webserver("./test/websites", pjson.config['test-port']);
+    var server = new Webserver("./test/websites");
 
     var classUnderTest;
 
@@ -19,8 +20,10 @@ describe("PhantomManager", function () {
     before(function (done) {
         this.timeout(timeout);
 
-        server.start(function () {
-            websites = server.getAvailableWebsites();
+        server.start(function (error, result) {
+            assert.ifError(error);
+            websites = result;
+
             var options = {
                 amount: 4,
                 timeout: 5000
