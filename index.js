@@ -17,16 +17,17 @@ function PhantomManager(callback, options) {
         },
         load_images: true,
         retries: 3,
-        idle_time: 120000
+        idle_time: 120000,
+        'use-proxy-cache': false
     };
 
-    this.options = extend(this.default_options, options);
+    this.options = extend({}, this.default_options, options);
 
     var self = this;
     self.createInstances(self.options.amount, function (error) {
         callback(error);
     });
-};
+}
 
 PhantomManager.prototype.openURL = function (url, pageBefore, evaluate, evaluateInject, pageAfter, callback) {
     this.getInstance().openURL(url, pageBefore, evaluate, evaluateInject, pageAfter, callback);
