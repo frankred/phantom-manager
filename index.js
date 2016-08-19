@@ -5,7 +5,18 @@ var debug = require('debug')('phantom-manager');
 var async = require('async');
 var extend = require('extend-fn');
 
-function PhantomManager(callback, options) {
+function PhantomManager(options, callback) {
+
+    if (callback && Object.prototype.toString.call(options) === '[object Function]') {
+        var tmp = options;
+        options = callback;
+        callback = tmp;
+    }
+
+    if (!callback) {
+        callback = options;
+        options = {};
+    }
 
     this.default_options = {
         amount: 4,
